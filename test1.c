@@ -13,6 +13,16 @@ enum OPER
 	MAX_OPER
 };
 
+static char oper_level[] =
+{
+	0,
+	1,
+	1,
+	2,
+	3,
+	0
+};
+
 int get_oper_entry_len(int len)
 {
 //	return (len - 1) * 2 + 1;
@@ -71,10 +81,63 @@ char *alloc_int_array(char *num, int len)
 	
 }
 
+int count_left(int *int_array, int len)
+{
+	int ret = int_array[0];
+	int i = 1;
+	for (i = 1; i < len; i += 2)
+	{
+		switch (int_array[i])
+		{
+			case ADD:
+				ret = ret + int_array[i + 1];
+				break;
+			case SUB:
+				ret = ret - int_array[i + 1];
+				break;
+			case MUL:
+				ret = ret * int_array[i + 1];
+				break;
+			case MERGE:
+				ret = ret * 10 + int_array[i + 1];
+				break;				
+		}
+	}
+	return ret;
+}
+
 int count_oper_entry(char *entry, int len)
 {
-	int entry_len = get_oper_entry_len(len);
-	return (0);
+//	int entry_len = get_oper_entry_len(len);
+	int buf[100];
+	int *tmp_int_array = &buf[0];
+	int tmp_int_pos = 1;
+	tmp_int_array[0] = entry[0];
+	char level1 = 0, level2;
+	int i;
+	int ret = 0;
+	for (i = 1; i < len; ++i)
+	{
+		tmp_int_array[tmp_int_pos] = entry[i * 2 - 1];
+		tmp_int_array[tmp_int_pos+1] = entry[i * 2];
+		tmp_int_pos += 2;
+
+		level2 = oper_level[entry[i * 2 - 1]];
+		if (level2 > level1)
+		{
+			level1 = level2;
+		}
+		else
+		{
+			ret = count_left(tmp_int_array, tmp_int_pos - 2);
+			tmp_int_array = tmp_int_array + tmp_int_pos - 3;
+			tmp_int_pos = 3;
+			tmp_int_array[0] = ret;
+		}
+	}
+	
+	ret = count_left(tmp_int_array, tmp_int_pos - 1);
+	return (ret);
 }
 
 int *count_oper_array(char *oper_array, int len)
