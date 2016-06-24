@@ -71,6 +71,26 @@ char *alloc_int_array(char *num, int len)
 	
 }
 
+int count_oper_entry(char *entry, int len)
+{
+	int entry_len = get_oper_entry_len(len);
+	return (0);
+}
+
+int *count_oper_array(char *oper_array, int len)
+{
+	int entry_num = get_oper_entry_num(len);
+	int entry_len = get_oper_entry_len(len);	
+	int *ret = malloc(sizeof(int) * entry_num);
+	int i;
+	for (i = 0; i < entry_num; ++i)
+	{
+		char *entry = oper_array + i * entry_len;		
+		ret[i] = count_oper_entry(entry, len);
+	}
+	return (0);
+}
+
 void print_oper_array(char *oper_array, int len)
 {
 	int i, j;
@@ -104,7 +124,8 @@ void print_oper_array(char *oper_array, int len)
 			}
 			b = !b;
 		}
-		printf(" = ?\n");
+		int ret = count_oper_entry(entry, len);
+		printf(" = %d\n", ret);
 	}
 }
 
