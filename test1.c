@@ -71,6 +71,43 @@ char *alloc_int_array(char *num, int len)
 	
 }
 
+void print_oper_array(char *oper_array, int len)
+{
+	int i, j;
+	int entry_len = get_oper_entry_len(len);
+	int entry_num = get_oper_entry_num(len);
+	
+	for (i = 0; i < entry_num; ++i)
+	{
+		bool b = true;
+		char *entry = oper_array + i * entry_len;
+		for (j = 0; j < entry_len; ++j)
+		{
+			if (b)
+			{
+				printf("%d", entry[j]);
+			}
+			else
+			{
+				switch (entry[j])
+				{
+					case ADD:
+						printf(" + ");
+						break;
+					case SUB:
+						printf(" - ");
+						break;
+					case MUL:
+						printf(" * ");
+						break;
+				}
+			}
+			b = !b;
+		}
+		printf(" = ?\n");
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	int i;
@@ -82,6 +119,8 @@ int main(int argc, char *argv[])
 		len = strlen(argv[i]);
 		int_array = alloc_int_array(argv[i], len);
 		oper_array = alloc_all_oper_array(int_array, len);
+
+		print_oper_array(oper_array, len);
 		
 		free(int_array);
 		free(oper_array);		
