@@ -81,27 +81,35 @@ char *alloc_int_array(char *num, int len)
 	
 }
 
+bool g_invalid_num = false; //不允许出现01  02这样0开头的数字，发现就过滤掉这一条
+
+//从右到左算
 int count_left(int *begin, int *end)
 {
-	int ret = begin[0];
+	int ret = end[0];
 	do
 	{
-		switch (begin[1])
+		switch (end[-1])
 		{
 			case ADD:
-				ret = ret + begin[2];
+				ret = end[-2] + ret;
 				break;
 			case SUB:
-				ret = ret - begin[2];
+				ret = end[-2] - ret;
 				break;
 			case MUL:
-				ret = ret * begin[2];
+				ret = ret * end[-2];
 				break;
 			case MERGE:
-				ret = ret * 10 + begin[2];
+				if (end[-2] == 0)
+				{
+					g_invalid_num = true;
+					return (0);
+				}
+				ret = ret + end[-2] * 10;
 				break;				
 		}
-		begin += 2;
+		end -= 2;
 	}
 	while (begin != end);
 	return ret;
@@ -110,7 +118,8 @@ int count_left(int *begin, int *end)
 int count_oper_entry(char *entry, int len)
 {
 //	int entry_len = get_oper_entry_len(len);
-	int buf[100];
+	int buf[100];// = {0};
+	g_invalid_num = false;
 	int *tmp_int_array = &buf[0];
 	int tmp_int_pos = 1;  //总是指向下一个操作符
 	tmp_int_array[0] = entry[0];
@@ -143,6 +152,8 @@ int count_oper_entry(char *entry, int len)
 				begin_pos -= 2;
 			}
 			ret = count_left(&tmp_int_array[begin_pos], &tmp_int_array[end_pos]);
+			if (g_invalid_num)
+				return (0);
 			tmp_int_pos = begin_pos + 3;
 			tmp_int_array[begin_pos] = ret;
 			tmp_int_array[begin_pos + 1] = entry[i * 2 - 1];
@@ -158,14 +169,19 @@ int count_oper_entry(char *entry, int len)
 	}
 
 		//剩余的按从右到左算一遍
+/*	
 	while (tmp_int_pos != 1)
 	{
 		ret = count_left(&tmp_int_array[tmp_int_pos - 3], &tmp_int_array[tmp_int_pos - 1]);
 		tmp_int_array[tmp_int_pos - 3] = ret;
 		tmp_int_pos -= 2;
 	}
-//	ret = count_left(&tmp_int_array[0], &tmp_int_array[tmp_int_pos - 1]);
-	return (tmp_int_array[0]);
+*/	
+	ret = count_left(&tmp_int_array[0], &tmp_int_array[tmp_int_pos - 1]);
+	if (g_invalid_num)
+		return (0);	
+//	return (tmp_int_array[0]);
+	return ret;
 }
 
 int *count_oper_array(char *oper_array, int len)
@@ -258,7 +274,7 @@ char** addOperators(char* num, int target, int* returnSize) {
 	{
 		char *entry = oper_array + i * entry_len;		
 		result_array[i] = count_oper_entry(entry, len);
-		if (result_array[i] == target)
+		if (result_array[i] == target && !g_invalid_num)
 		{
 			ret[*returnSize] = malloc(entry_len + 1);
 			bool b = true;
@@ -304,6 +320,22 @@ int main(int argc, char *argv[])
 	char *int_array;
 	char *oper_array;
 
+	char test[] = {2,
+				   4,1,
+				   4,4,
+				   4,7,
+				   4,4,
+				   4,8,
+				   4,3,
+				   4,6,
+				   4,4,
+				   4,8};
+	len = 10;
+
+	int ret = count_oper_entry(&test[0], len);
+	printf("ret = %d\n", ret);
+	return (0);
+
 	if (argc == 3)
 	{
 		char **ret = addOperators(argv[1], atoi(argv[2]), &len);
@@ -313,7 +345,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	return (0);
-	
+
 	for (i = 1; i < argc; ++i)
 	{
 		len = strlen(argv[i]);
