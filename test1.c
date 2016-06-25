@@ -81,28 +81,29 @@ char *alloc_int_array(char *num, int len)
 	
 }
 
-int count_left(int *int_array, int len)
+int count_left(int *begin, int *end)
 {
-	int ret = int_array[0];
-	int i = 1;
-	for (i = 1; i < len; i += 2)
+	int ret = begin[0];
+	do
 	{
-		switch (int_array[i])
+		switch (begin[1])
 		{
 			case ADD:
-				ret = ret + int_array[i + 1];
+				ret = ret + begin[2];
 				break;
 			case SUB:
-				ret = ret - int_array[i + 1];
+				ret = ret - begin[2];
 				break;
 			case MUL:
-				ret = ret * int_array[i + 1];
+				ret = ret * begin[2];
 				break;
 			case MERGE:
-				ret = ret * 10 + int_array[i + 1];
+				ret = ret * 10 + begin[2];
 				break;				
 		}
+		begin += 2;
 	}
+	while (begin != end);
 	return ret;
 }
 
@@ -111,7 +112,7 @@ int count_oper_entry(char *entry, int len)
 //	int entry_len = get_oper_entry_len(len);
 	int buf[100];
 	int *tmp_int_array = &buf[0];
-	int tmp_int_pos = 1;
+	int tmp_int_pos = 1;  //总是指向下一个操作符
 	tmp_int_array[0] = entry[0];
 	char level1 = 0, level2;
 	int i;
@@ -129,15 +130,42 @@ int count_oper_entry(char *entry, int len)
 		}
 		else
 		{
-			ret = count_left(tmp_int_array, tmp_int_pos - 2);
-			tmp_int_array = tmp_int_array + tmp_int_pos - 3;
-			tmp_int_pos = 3;
-			tmp_int_array[0] = ret;
+				//计算begin_pos
+				//end_pos = tmp_int_pos - 3
+				//tmp_int_pos = begin_pos + 1
+			int end_pos = tmp_int_pos - 3;
+			int begin_pos = end_pos - 2;
+			for (; begin_pos > 0;)
+			{
+				int left_level = oper_level[tmp_int_array[begin_pos - 1]];
+				if (left_level < level2)
+					break;
+				begin_pos -= 2;
+			}
+			ret = count_left(&tmp_int_array[begin_pos], &tmp_int_array[end_pos]);
+			tmp_int_pos = begin_pos + 3;
+			tmp_int_array[begin_pos] = ret;
+			tmp_int_array[begin_pos + 1] = entry[i * 2 - 1];
+			tmp_int_array[begin_pos + 2] = entry[i * 2];
+			level1 = level2;
+			
+			
+//			ret = count_left(tmp_int_array, tmp_int_pos - 2);
+//			tmp_int_array = tmp_int_array + tmp_int_pos - 3;
+//			tmp_int_pos = 3;
+//			tmp_int_array[0] = ret;
 		}
 	}
-	
-	ret = count_left(tmp_int_array, tmp_int_pos - 1);
-	return (ret);
+
+		//剩余的按从右到左算一遍
+	while (tmp_int_pos != 1)
+	{
+		ret = count_left(&tmp_int_array[tmp_int_pos - 3], &tmp_int_array[tmp_int_pos - 1]);
+		tmp_int_array[tmp_int_pos - 3] = ret;
+		tmp_int_pos -= 2;
+	}
+//	ret = count_left(&tmp_int_array[0], &tmp_int_array[tmp_int_pos - 1]);
+	return (tmp_int_array[0]);
 }
 
 int *count_oper_array(char *oper_array, int len)
