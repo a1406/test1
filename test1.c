@@ -84,9 +84,9 @@ char *alloc_int_array(char *num, int len)
 bool g_invalid_num = false; //不允许出现01  02这样0开头的数字，发现就过滤掉这一条
 
 //从右到左算
-int count_left(int *begin, int *end)
+long long count_left(long long *begin, long long *end)
 {
-	int ret = end[0];
+	long long ret = end[0];
 	do
 	{
 		switch (end[-1])
@@ -112,20 +112,21 @@ int count_left(int *begin, int *end)
 		end -= 2;
 	}
 	while (begin != end);
+//	printf("%llu\n", ret);
 	return ret;
 }
 
-int count_oper_entry(char *entry, int len)
+long long count_oper_entry(char *entry, int len)
 {
 //	int entry_len = get_oper_entry_len(len);
-	int buf[100];// = {0};
+	long long buf[100];// = {0};
 	g_invalid_num = false;
-	int *tmp_int_array = &buf[0];
+	long long *tmp_int_array = &buf[0];
 	int tmp_int_pos = 1;  //总是指向下一个操作符
 	tmp_int_array[0] = entry[0];
 	char level1 = 0, level2;
 	int i;
-	int ret = 0;
+	long long ret = 0;
 	for (i = 1; i < len; ++i)
 	{
 		tmp_int_array[tmp_int_pos] = entry[i * 2 - 1];
@@ -264,7 +265,7 @@ char** addOperators(char* num, int target, int* returnSize) {
 	int entry_len = get_oper_entry_len(len);
 	int entry_num = get_oper_entry_num(len);
 
-	int *result_array = malloc(sizeof(int) * entry_num);
+	long long *result_array = malloc(sizeof(long long) * entry_num);
 	*returnSize = 0;
 
 	static char *ret[300];
@@ -319,7 +320,7 @@ int main(int argc, char *argv[])
 	int len;
 	char *int_array;
 	char *oper_array;
-
+/*
 	char test[] = {2,
 				   4,1,
 				   4,4,
@@ -332,10 +333,10 @@ int main(int argc, char *argv[])
 				   4,8};
 	len = 10;
 
-	int ret = count_oper_entry(&test[0], len);
-	printf("ret = %d\n", ret);
+	long long ret = count_oper_entry(&test[0], len);
+	printf("ret = %llu\n", ret);
 	return (0);
-
+*/
 	if (argc == 3)
 	{
 		char **ret = addOperators(argv[1], atoi(argv[2]), &len);
