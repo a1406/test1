@@ -187,6 +187,13 @@ void print_oper_array(char *oper_array, int len)
 	int i, j;
 	int entry_len = get_oper_entry_len(len);
 	int entry_num = get_oper_entry_num(len);
+	int *result_array = malloc(sizeof(int) * entry_num);
+
+	for (i = 0; i < entry_num; ++i)
+	{
+		char *entry = oper_array + i * entry_len;		
+		result_array[i] = count_oper_entry(entry, len);
+	}
 	
 	for (i = 0; i < entry_num; ++i)
 	{
@@ -215,9 +222,79 @@ void print_oper_array(char *oper_array, int len)
 			}
 			b = !b;
 		}
-		int ret = count_oper_entry(entry, len);
-		printf(" = %d\n", ret);
+//		int ret = count_oper_entry(entry, len);
+		printf(" = %d\n", result_array[i]);
 	}
+}
+
+/**
+ *  * Return an array of size *returnSize.
+ *   * Note: The returned array must be malloced, assume caller calls free().
+ *    */
+char** addOperators(char* num, int target, int* returnSize) {
+	char *int_array;
+	char *oper_array;
+	int len = strlen(num);
+
+	if (len == 0)
+	{
+		*returnSize = 0;
+		return NULL;
+	}
+	
+	int_array = alloc_int_array(num, len);
+	oper_array = alloc_all_oper_array(int_array, len);
+
+	int entry_len = get_oper_entry_len(len);
+	int entry_num = get_oper_entry_num(len);
+
+	int *result_array = malloc(sizeof(int) * entry_num);
+	*returnSize = 0;
+
+	static char *ret[300];
+	int i;
+
+	for (i = 0; i < entry_num; ++i)
+	{
+		char *entry = oper_array + i * entry_len;		
+		result_array[i] = count_oper_entry(entry, len);
+		if (result_array[i] == target)
+		{
+			ret[*returnSize] = malloc(entry_len + 1);
+			bool b = true;
+			int j;
+			char *p = ret[*returnSize];
+			for (j = 0; j < entry_len; ++j)
+			{
+				if (b)
+				{
+					p += sprintf(p, "%d", entry[j]);
+				}
+				else
+				{
+					switch (entry[j])
+					{
+						case ADD:
+							p += sprintf(p, "+");
+							break;
+						case SUB:
+							p += sprintf(p, "-");							
+							break;
+						case MUL:
+							p += sprintf(p, "*");							
+							break;							
+					}
+				}
+				b = !b;
+			}
+			++(*returnSize);
+		}
+	}
+
+	free(result_array);
+	free(int_array);
+	free(oper_array);		
+	return ret;
 }
 
 int main(int argc, char *argv[])
@@ -226,12 +303,23 @@ int main(int argc, char *argv[])
 	int len;
 	char *int_array;
 	char *oper_array;
+
+	if (argc == 3)
+	{
+		char **ret = addOperators(argv[1], atoi(argv[2]), &len);
+		for (i = 0; i < len; ++i)
+		{
+			printf("%s\n", ret[i]);
+		}
+	}
+	return (0);
+	
 	for (i = 1; i < argc; ++i)
 	{
 		len = strlen(argv[i]);
 		int_array = alloc_int_array(argv[i], len);
 		oper_array = alloc_all_oper_array(int_array, len);
-
+		
 		print_oper_array(oper_array, len);
 		
 		free(int_array);
@@ -239,12 +327,3 @@ int main(int argc, char *argv[])
 	}
 	return (0);
 }
-
-
-
-
-
-
-
-
-
