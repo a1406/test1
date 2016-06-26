@@ -6,11 +6,21 @@
 
 #define MAX_NUMS 20
 
-void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *return_size)
+void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *ret_size)
 {
 	int i, j;
 	int next_nums[MAX_NUMS];
 	int next_prev[MAX_NUMS];
+
+	if (size == 1)
+	{
+		ret[*ret_size] = malloc(sizeof(int) * (prev_size + 1));
+		memcpy(&ret[*ret_size][0], prev, sizeof(int) * prev_size);
+		ret[*ret_size][prev_size] = nums[0];
+		*ret_size = *ret_size + 1;			
+		return;
+	}
+	
 	memcpy(next_prev, prev, sizeof(int) * prev_size);
 	for (i = 0; i < size; ++i)
 	{
@@ -19,7 +29,7 @@ void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *ret
 			
 		}
 		next_prev[prev_size] = nums[i];
-		set_nums(next_nums, size - 1, next_prev, prev_size + 1, ret, return_size);
+		set_nums(next_nums, size - 1, next_prev, prev_size + 1, ret, ret_size);
 	}
 }
 
@@ -46,9 +56,14 @@ int main(int argc, char *argv[])
 	int num_size = argc - 1;
     int *nums = malloc(sizeof(int) * num_size);
 
-	int return_size;
-	int **return_num = permuteUnique(nums, num_size, &return_size);
 	int i, j;
+	int return_size;
+	for (i = 1; i < argc; i++)
+	{
+		nums[i - 1] = atoi(argv[i]);
+	}
+	
+	int **return_num = permuteUnique(nums, num_size, &return_size);
 	for (i = 0; i < return_size; ++i)
 	{
 		for (j = 0; j < num_size; ++j)
