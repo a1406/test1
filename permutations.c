@@ -6,6 +6,19 @@
 
 #define MAX_NUMS 20
 
+bool check_unique(int *prev, int prev_size, int now, int **ret, int ret_size)
+{
+	int i;
+	for (i = 0; i < ret_size; ++i)
+	{
+		if (ret[i][prev_size] != now)
+			continue;
+		if (memcmp(&ret[i][0], prev, sizeof(int) * prev_size) == 0)
+			return false;
+	}
+	return true;
+}
+
 void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *ret_size)
 {
 	int i, j;
@@ -14,19 +27,34 @@ void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *ret
 
 	if (size == 1)
 	{
-		ret[*ret_size] = malloc(sizeof(int) * (prev_size + 1));
-		memcpy(&ret[*ret_size][0], prev, sizeof(int) * prev_size);
-		ret[*ret_size][prev_size] = nums[0];
-		*ret_size = *ret_size + 1;			
+		if (check_unique(prev, prev_size, nums[0], ret, *ret_size))
+		{
+			ret[*ret_size] = malloc(sizeof(int) * (prev_size + 1));
+			memcpy(&ret[*ret_size][0], prev, sizeof(int) * prev_size);
+			ret[*ret_size][prev_size] = nums[0];
+/*
+			printf("[ ");
+			for (i = 0; i <= prev_size; ++i)
+			{
+				printf("%d ", ret[*ret_size][i]);
+			}
+			printf("]\n");			
+*/			
+			*ret_size = *ret_size + 1;
+		}
 		return;
 	}
 	
 	memcpy(next_prev, prev, sizeof(int) * prev_size);
 	for (i = 0; i < size; ++i)
 	{
-		for (j = 0; j < size - 1; ++j)
+		int *p = &next_nums[0];
+		for (j = 0; j < size; ++j)
 		{
-			
+			if (j == i)
+				continue;
+			*p = nums[j];
+			++p;
 		}
 		next_prev[prev_size] = nums[i];
 		set_nums(next_nums, size - 1, next_prev, prev_size + 1, ret, ret_size);
@@ -46,7 +74,8 @@ int** permuteUnique(int* nums, int numsSize, int* returnSize) {
 
 	int ret_size = 0;
 	set_nums(nums, numsSize, NULL, 0, ret, &ret_size);
-	assert(*returnSize == ret_size);
+	*returnSize = ret_size;
+//	assert(*returnSize == ret_size);
 
 	return ret;
 }
@@ -70,6 +99,7 @@ int main(int argc, char *argv[])
 			printf("%d ", return_num[i][j]);
 		printf("\n");
 	}
+	printf("total num = %d\n", return_size);
 
     return 0;
 }
