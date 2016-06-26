@@ -1,4 +1,4 @@
-all: test1 candy  distinct_subsequences
+all: test1 candy  distinct_subsequences permutations
 
 clean:
 	rm -rf test1 candy distinct_subsequences
@@ -10,4 +10,7 @@ candy: candy.c
 	gcc -g -O0 -o $@ $^
 
 distinct_subsequences: distinct_subsequences.c
+	gcc -g -O0 -o $@ $^
+
+permutations: permutations.c
 	gcc -g -O0 -o $@ $^
