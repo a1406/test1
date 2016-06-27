@@ -7,7 +7,8 @@
 //1 s[0] = t[0]
 //2 s[last] = t[last]
 //3 s中每个字符都是t中包含的
-char *reset_s(char *s, char *t)
+//4 返回相差的字符数
+char *reset_s(char *s, char *t, int *diff)
 {
 	if (!t || !*t)
 		return NULL;
@@ -18,6 +19,7 @@ char *reset_s(char *s, char *t)
 	if (!*s)
 		return NULL;
 	int len_s = strlen(s);
+//	printf("s = %s\n", s);
 	
 	char *ret = malloc(len_s);
 	char *p = ret;
@@ -27,20 +29,29 @@ char *reset_s(char *s, char *t)
 			if (*s == t[i]) {
 				*p = *s;
 				++p;
+				break;
 			}
 		}
 		++s;
 	}
+	*p = '\0';
+	--p;
+//	printf("ret = %s\n", ret);
+	
 	while (*p != t[len_t - 1] && p != ret) {
 		*p = '\0';
 	}
-	if (p == ret)
+	if (p == ret && *p != t[len_t - 1])
 		return NULL;
+	*diff = p - ret + 1 - len_t;
 	return ret;
 }
 
 int numDistinct(char* s, char* t) {
-    s = reset_s(s, t);
+	int diff;
+    s = reset_s(s, t, &diff);
+	printf("%d %lu: %s\n", diff, strlen(s), s);
+	return (0);
 	
 }
 
