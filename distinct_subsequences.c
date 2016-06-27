@@ -65,16 +65,15 @@ int g_ret;
 
 void test(char *s, char *t, int len_s, int len_t)
 {
-	if (len_s == len_t)
-	{
+		//1 去掉最左边
+		//2 检查剩下的是否合法
+		//3 合法就计算去掉的数目
+		//4 不合法就保留最左边，算剩下的
+	while (*s && *s != *t) {
+		++s;
+	}
+	if (!*s)
 		return;
-	}
-
-	int i;
-	for (i = 0; i <= len_s - len_t; ++i)
-	{
-		
-	}
 }
 
 int numDistinct(char* s, char* t) {
