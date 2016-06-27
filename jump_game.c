@@ -5,7 +5,23 @@
 #include <assert.h>
 
 int jump(int* nums, int numsSize) {
-
+	int cur_pos = 0;
+	int next_pos = nums[0];
+	int max_pos = nums[0];
+	int ret = 0;
+	while (next_pos < numsSize - 1)
+	{
+		int i;
+		for (i = cur_pos; i < next_pos; ++i)
+		{
+			if (i + nums[i] > max_pos)
+				max_pos = i + nums[i];
+		}
+		cur_pos = max_pos;
+		next_pos = max_pos = cur_pos + nums[cur_pos];
+		++ret;
+	}
+	return ret;
 }
 
 int main(int argc, char *argv[])
