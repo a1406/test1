@@ -46,6 +46,21 @@ char *reset_s(char *s, char *t)
 	return ret;
 }
 
+bool check_t_in_s(char *s, char *t)
+{
+	while (*t) {
+		while (*s) {
+			if (*s == *t)
+				break;
+			++s;
+		}
+		if (!*s)
+			return false;
+		++t;
+	}
+	return true;
+}
+
 int g_ret;
 
 void test(char *s, char *t, int len_s, int len_t)
