@@ -56,7 +56,8 @@ int candy(int* ratings, int ratingsSize) {
 int main(int argc, char *argv[])
 {
 	int *ratings = malloc(sizeof(int) * (argc - 1));
-	for (int i = 1; i < argc; ++i)
+	int i;
+	for (i = 1; i < argc; ++i)
 	{
 //		printf("%d\n", level_max(atoi(argv[i])));
 		ratings[i-1] = atoi(argv[i]);
