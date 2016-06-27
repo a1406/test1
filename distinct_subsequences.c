@@ -63,8 +63,19 @@ bool check_t_in_s(char *s, char *t)
 
 int g_ret;
 
-void test(char *s, char *t, int len_s, int len_t)
+void test(char *s, char *t)
 {
+	int l_s = strlen(s);
+	int l_t = strlen(t);
+
+	if (l_s == l_t && memcmp(s, t, l_s) == 0) {
+		++g_ret;
+		return;
+	}
+
+	if (l_s < l_t)
+		return;	
+	
 		//1 去掉最左边
 		//2 检查剩下的是否合法
 		//3 合法就计算去掉的数目
@@ -74,14 +85,24 @@ void test(char *s, char *t, int len_s, int len_t)
 	}
 	if (!*s)
 		return;
+	if (check_t_in_s(&s[1], t)) {
+		test(&s[1], &t[0]);
+	}
+	test(&s[1], &t[1]);
+
 }
 
 int numDistinct(char* s, char* t) {
     s = reset_s(s, t);
+	if (!s)
+		return (0);
 	g_ret = 0;
+
+	test(s, t);
+	return g_ret;
 	
 //	printf("%d %lu: %s\n", diff, strlen(s), s);
-	return (0);
+//	return (0);
 	
 }
 
