@@ -8,7 +8,7 @@
 //2 s[last] = t[last]
 //3 s中每个字符都是t中包含的
 //4 返回相差的字符数
-char *reset_s(char *s, char *t, int *diff)
+char *reset_s(char *s, char *t)
 {
 	if (!t || !*t)
 		return NULL;
@@ -43,14 +43,30 @@ char *reset_s(char *s, char *t, int *diff)
 	}
 	if (p == ret && *p != t[len_t - 1])
 		return NULL;
-	*diff = p - ret + 1 - len_t;
 	return ret;
 }
 
+int g_ret;
+
+void test(char *s, char *t, int len_s, int len_t)
+{
+	if (len_s == len_t)
+	{
+		return;
+	}
+
+	int i;
+	for (i = 0; i <= len_s - len_t; ++i)
+	{
+		
+	}
+}
+
 int numDistinct(char* s, char* t) {
-	int diff;
-    s = reset_s(s, t, &diff);
-	printf("%d %lu: %s\n", diff, strlen(s), s);
+    s = reset_s(s, t);
+	g_ret = 0;
+	
+//	printf("%d %lu: %s\n", diff, strlen(s), s);
 	return (0);
 	
 }
