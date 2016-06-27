@@ -5,21 +5,33 @@
 #include <assert.h>
 
 int jump(int* nums, int numsSize) {
+	if (numsSize <= 1)
+		return (0);
 	int cur_pos = 0;
-	int next_pos = nums[0];
-	int max_pos = nums[0];
+	int start_pos = 0;
+	int end_pos = cur_pos + nums[cur_pos];
 	int ret = 0;
-	while (next_pos < numsSize - 1)
+	while (cur_pos < numsSize - 1)
 	{
 		int i;
-		for (i = cur_pos; i < next_pos; ++i)
+		int max_pos = 0;
+		for (i = start_pos; i <= end_pos; ++i)
 		{
 			if (i + nums[i] > max_pos)
+			{
+				cur_pos = i;
 				max_pos = i + nums[i];
+			}
 		}
-		cur_pos = max_pos;
-		next_pos = max_pos = cur_pos + nums[cur_pos];
+//		cur_pos = max_pos;
+		start_pos = end_pos + 1;
+		end_pos = cur_pos + nums[cur_pos];
 		++ret;
+		printf("%d: cur[%d] start[%d] end[%d]\n", ret, cur_pos, start_pos, end_pos);
+		if (start_pos > numsSize - 1)
+			return ret;
+		if (end_pos > numsSize - 1)
+			return ret+1;
 	}
 	return ret;
 }
