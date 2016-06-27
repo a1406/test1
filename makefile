@@ -1,4 +1,4 @@
-all: test1 candy  distinct_subsequences permutations
+all: test1 candy  distinct_subsequences permutations jump_game
 
 clean:
 	rm -rf test1 candy distinct_subsequences
@@ -13,4 +13,7 @@ distinct_subsequences: distinct_subsequences.c
 	gcc -g -O0 -o $@ $^
 
 permutations: permutations.c
+	gcc -g -O0 -o $@ $^
+
+jump_game: jump_game.c
 	gcc -g -O0 -o $@ $^
