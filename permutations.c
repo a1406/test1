@@ -27,7 +27,7 @@ void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *ret
 
 	if (size == 1)
 	{
-		if (check_unique(prev, prev_size, nums[0], ret, *ret_size))
+//		if (check_unique(prev, prev_size, nums[0], ret, *ret_size))
 		{
 			ret[*ret_size] = malloc(sizeof(int) * (prev_size + 1));
 			memcpy(&ret[*ret_size][0], prev, sizeof(int) * prev_size);
@@ -48,6 +48,8 @@ void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *ret
 	memcpy(next_prev, prev, sizeof(int) * prev_size);
 	for (i = 0; i < size; ++i)
 	{
+		if (i != 0 && nums[i] == nums[i-1])
+			continue;
 		int *p = &next_nums[0];
 		for (j = 0; j < size; ++j)
 		{
@@ -61,6 +63,11 @@ void set_nums(int *nums, int size, int *prev, int prev_size, int **ret, int *ret
 	}
 }
 
+static int compint(const void *p1, const void *p2)
+{
+	return bcmp(p1, p2, sizeof(int));
+}
+
 /**
  * Return an array of arrays of size *returnSize.
  * Note: The returned array must be malloced, assume caller calls free().
@@ -71,6 +78,8 @@ int** permuteUnique(int* nums, int numsSize, int* returnSize) {
 	for (i = 2; i <= numsSize; ++i)
 		*returnSize *= i;
 	int **ret = malloc(sizeof(int *) * (*returnSize));
+
+	qsort(nums, numsSize, sizeof(int), compint);
 
 	int ret_size = 0;
 	set_nums(nums, numsSize, NULL, 0, ret, &ret_size);
