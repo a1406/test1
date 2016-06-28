@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int firstMissingPositive(int* nums, int numsSize) {
-	int ret = 1;
-	
-	return 1;
+int trap(int* height, int heightSize) {
+	return (0);
 }
 
 int main(int argc, char *argv[])
@@ -18,7 +17,8 @@ int main(int argc, char *argv[])
 		nums[i - 1] = atoi(argv[i]);
 	}
 	
-	int ret = firstMissingPositive(nums, num_size);
+	int ret = trap(nums, num_size);
 	printf("ret = %d\n", ret);
+    
     return 0;
 }
