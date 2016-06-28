@@ -1,7 +1,10 @@
-all: test1 candy  distinct_subsequences permutations jump_game
+all_target=test1 candy  distinct_subsequences permutations jump_game \
+	edit_distance
+
+all: $(all_target)
 
 clean:
-	rm -rf test1 candy distinct_subsequences
+	rm -rf $(all_target)
 
 test1: test1.c
 	gcc -g -O0 -o test1 test1.c
@@ -16,4 +19,7 @@ permutations: permutations.c
 	gcc -g -O0 -o $@ $^
 
 jump_game: jump_game.c
+	gcc -g -O0 -o $@ $^
+
+edit_distance: edit_distance.c
 	gcc -g -O0 -o $@ $^
