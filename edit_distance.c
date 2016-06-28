@@ -32,8 +32,10 @@ int minDistance(char* word1, char* word2) {
 		
 	}
 	
-	int ret = (record[len1 * len2 - 1]);
-	ret = len1 - ret + len2 - ret - 2;
+	int max = (record[len1 * len2 - 1]);
+	int t1 = len1 - 1 - max;
+	int t2 = len2 - 1 - max;
+	int ret = len1 - ret + len2 - ret - 2;
 	return ret;
 }
 

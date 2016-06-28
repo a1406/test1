@@ -1,5 +1,5 @@
 all_target=test1 candy  distinct_subsequences permutations jump_game \
-	edit_distance
+	edit_distance first_missing_positive
 
 all: $(all_target)
 
@@ -22,4 +22,7 @@ jump_game: jump_game.c
 	gcc -g -O0 -o $@ $^
 
 edit_distance: edit_distance.c
+	gcc -g -O0 -o $@ $^
+
+first_missing_positive: first_missing_positive.c 
 	gcc -g -O0 -o $@ $^
