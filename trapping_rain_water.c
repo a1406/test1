@@ -9,29 +9,28 @@ enum trap_state
 	FIND_TOP_RIGHT,
 };
 
-typedef void (*trap_func)(int height);
-
-void init_func(int height)
-{
-}
-
-void find_bottom_func(int height)
-{
-}
-
-void find_top_right_func(int height)
-{
-}
-
+typedef void (*trap_func)(int *height);
 trap_func g_func;
 int g_ret;
+
+void init_func(int *height)
+{
+}
+
+void find_bottom_func(int *height)
+{
+}
+
+void find_top_right_func(int *height)
+{
+}
 
 int trap(int* height, int heightSize) {
 	g_func = init_func;
 	g_ret = 0;
 	int i;
-	for (i = 0; i < heightSize; ++i) {
-		g_func(height[i]);
+	for (i = 1; i < heightSize - 1; ++i) {
+		g_func(&height[i]);
 	}
 	return (g_ret);
 }
