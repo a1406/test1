@@ -104,9 +104,11 @@ int main(int argc, char *argv[])
 	int maxWidth = atoi(argv[1]);
     char **ret = fullJustify(&argv[2], argc - 2, maxWidth, &size);
 	int i;
+	printf("[");
 	for (i = 0; i < size; ++i) {
-		printf("[%s]\n", ret[i]);
+		printf("\"%s\",", ret[i]);
 	}
+	printf("]\n");
     return 0;
 }
 
