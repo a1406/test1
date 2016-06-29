@@ -60,6 +60,9 @@ char** fullJustify(char** words, int wordsSize, int maxWidth, int* returnSize) {
 			if (sum_words <= 1) {
 				space = 0;
 				extern_space = 0;
+			} else if (sum_words == 2) {
+				space = 1;
+				extern_space = 0;
 			} else {
 				space = (maxWidth - sum_words_len) / (sum_words - 1);
 				extern_space = (maxWidth - sum_words_len) % (sum_words - 1);
@@ -77,7 +80,20 @@ char** fullJustify(char** words, int wordsSize, int maxWidth, int* returnSize) {
 	}
 	
 	g_ret[*returnSize] = malloc(maxWidth);
-	fill_words(g_ret[*returnSize], begin, sum_words, 0, 0, maxWidth);
+	int space, extern_space;
+	if (sum_words <= 1) {
+		space = 0;
+		extern_space = 0;
+	} else if (sum_words == 2) {
+		space = 1;
+		extern_space = 0;
+	} else {
+		space = (maxWidth - sum_words_len) / (sum_words - 1);
+		extern_space = (maxWidth - sum_words_len) % (sum_words - 1);
+	}
+
+	printf("sum_word_len[%d] sum_words[%d] space[%d] extern_space[%d]\n", sum_words_len, sum_words, space, extern_space);	
+	fill_words(g_ret[*returnSize], begin, sum_words, space, extern_space, maxWidth);
 	++(*returnSize);
 	return g_ret;
 }
