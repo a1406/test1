@@ -1,5 +1,6 @@
 all_target=test1 candy  distinct_subsequences permutations jump_game \
-	edit_distance first_missing_positive trapping_rain_water
+	edit_distance first_missing_positive trapping_rain_water \
+	text_justification
 
 all: $(all_target)
 
@@ -28,4 +29,7 @@ first_missing_positive: first_missing_positive.c
 	gcc -g -O0 -o $@ $^
 
 trapping_rain_water: trapping_rain_water.c
+	gcc -g -O0 -o $@ $^
+
+text_justification: text_justification.c
 	gcc -g -O0 -o $@ $^
