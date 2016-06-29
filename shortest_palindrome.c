@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+//#define printf
+
 int get_palindrome_index(int index, int size)
 {
 	return size - 1 - index;
@@ -50,7 +52,7 @@ char* shortestPalindrome(char* s) {
 
 	int mid;
 	int tmp_len = len;
-	while (tmp_len > 0) {
+	while (tmp_len > 1) {
 		int i;
 		mid = get_mid_index(tmp_len);
 		for (i = 0; i <= mid; ++i) {
