@@ -41,7 +41,24 @@ bool check_palindrome(char *a, char *b)
  *    * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  *     */
 int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* returnSize) {
-	return NULL;
+	int **ret = malloc(sizeof(int *) * 1000);
+	*returnSize = 0;
+
+	int i, j;
+	for (i = 0; i < wordsSize; ++i) {
+		for (j = 0; j < wordsSize; ++j) {
+			if (i == j)
+				continue;
+			if (check_palindrome(words[i], words[j])) {
+				ret[*returnSize] = malloc(sizeof(int) * 2);
+				ret[*returnSize][0] = i;
+				ret[*returnSize][1] = j;				
+				++(*returnSize);
+			}
+		}
+	}
+		
+	return ret;
 }
 
 int main(int argc, char *argv[])
