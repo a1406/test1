@@ -1,5 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+int get_op_index(int len1, int len2, int index)
+{
+	return (len1 + len2 - index - 1);
+}
+
+int get_last_index(int len1, int len2)
+{
+	return (len1 + len2) / 2 - 1;
+}
+
+bool check_palindrome(char *a, char *b)
+{
+	int len1 = strlen(a);
+	int len2 = strlen(b);
+	
+	return false;
+}
 
 /**
  *  * Return an array of arrays of size *returnSize.
