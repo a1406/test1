@@ -36,6 +36,7 @@ int check_palindrome(char *s, unsigned int *dup, int len)
 {
 	int i;
 	int ret = dup[len - 1] + 1;
+	int success_ret = 0;
 	for (i = 0; i <= len / 2; i++) {
 		int	tmp_dup = dup[len - 1 - i];
 			
@@ -52,13 +53,14 @@ int check_palindrome(char *s, unsigned int *dup, int len)
 				return ret;
 			} else {
 				len = len - tmp_dup - dup[i];
+				success_ret += tmp_dup - dup[i];
 			}
 //			return false;
 		}
 		
 		i += dup[i];
 	}
-	return 0;
+	return success_ret;
 }
 
 char *alloc_palindrome(char *s, int len, int end_index)
