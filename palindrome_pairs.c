@@ -41,6 +41,7 @@ int check_palindrome(char *a, char *b)
 			if (c1 > c2)
 				return 1;
 			return -1;
+//			return 1;
 		}
 	}
 	
@@ -110,8 +111,8 @@ void sort_words(int size, int **sort1, int **sort2)
  *     */
 int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* returnSize) {
 	g_words = words;
-	int **ret = malloc(sizeof(int *) * 4000);
-	(*columnSizes) = malloc(sizeof(int*) * 4000);
+	int **ret = malloc(sizeof(int *) * 8000);
+	(*columnSizes) = malloc(sizeof(int*) * 8000);
 	*returnSize = 0;
 	int *sort1, *sort2;
 	sort_words(wordsSize, &sort1, &sort2);	
@@ -145,6 +146,7 @@ int main(int argc, char *argv[])
 {
 	int *column;
 	int ret_size;
+	printf("argc = %d\n", argc);
 	int **ret = palindromePairs(&argv[1], argc - 1, &column, &ret_size);
 	int i;
 	for (i = 0; i < ret_size; i++) {
