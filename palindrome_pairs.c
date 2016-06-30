@@ -24,8 +24,15 @@ bool check_palindrome(char *a, char *b)
 {
 	int len1 = strlen(a);
 	int len2 = strlen(b);
+	int last_index = get_last_index(len1, len2);
+	int i;
+	for (i = 0; i <= last_index; i++) {
+		int op_index = get_op_index(len1, len2, i);
+		if (get_c(a, len1, b, i) != get_c(a, len1, b, op_index))
+			return false;
+	}
 	
-	return false;
+	return true;
 }
 
 /**
@@ -39,7 +46,10 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 
 int main(int argc, char *argv[])
 {
-    
+    if (check_palindrome(argv[1], argv[2]))
+		printf("true\n");
+	else
+		printf("false\n");
     return 0;
 }
 
