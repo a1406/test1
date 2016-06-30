@@ -1,15 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdbool.h>
 //#define printf
-
-int get_palindrome_index(char *s, int begin, int end)
-{
-	if (s[begin] != s[end])
-		return get_palindrome_index(s, begin, end - 1);
-	return (0);
-}
 
 unsigned int *count_dup_num(char *s, int len)
 {
@@ -33,9 +26,16 @@ unsigned int *count_dup_num(char *s, int len)
 	return ret;
 }
 
+bool check_palindrome(char *s, unsigned int *dup, int len)
+{
+	return false;
+}
+
 char* shortestPalindrome(char* s) {
 	int len = strlen(s);
-	int last = get_palindrome_index(s, 0, len - 1);
+	unsigned int *dup = count_dup_num(s, len);
+	check_palindrome(s, dup, len);
+
 	return NULL;
 }
 
