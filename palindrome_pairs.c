@@ -36,7 +36,7 @@ int check_palindrome(char *a, char *b)
 		char c1 = get_c(a, len1, b, i);
 		char c2 = get_c(a, len1, b, op_index);
 		if (c1 != c2) {
-			if (i > len1 || i > len2)
+			if (i >= len1 || i >= len2)
 				return 1;
 			if (c1 > c2)
 				return 1;

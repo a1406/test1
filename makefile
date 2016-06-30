@@ -42,5 +42,5 @@ self_crossing: self_crossing.c
 	gcc -g -O0 -o $@ $^
 
 palindrome_pairs: palindrome_pairs.c
-	gcc -g -O0 -o $@ $^
+	gcc -g -O4 -o $@ $^
 
