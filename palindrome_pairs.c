@@ -110,8 +110,8 @@ void sort_words(int size, int **sort1, int **sort2)
  *     */
 int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* returnSize) {
 	g_words = words;
-	int **ret = malloc(sizeof(int *) * 1000);
-	(*columnSizes) = malloc(sizeof(int) * 1000);
+	int **ret = malloc(sizeof(int *) * 4000);
+	(*columnSizes) = malloc(sizeof(int*) * 4000);
 	*returnSize = 0;
 	int *sort1, *sort2;
 	sort_words(wordsSize, &sort1, &sort2);	
@@ -122,12 +122,12 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 		for (j = 0; j < wordsSize; ++j) {
 			if (sort1[i] == sort2[j])
 				continue;
-			t = check_palindrome(words[i], words[j]);
+			t = check_palindrome(words[sort1[i]], words[sort2[j]]);
 //			if (check_palindrome(words[i], words[j])) {
 			if (t == 0) {
 				ret[*returnSize] = malloc(sizeof(int) * 2);
-				ret[*returnSize][0] = i;
-				ret[*returnSize][1] = j;
+				ret[*returnSize][0] = sort1[i];
+				ret[*returnSize][1] = sort2[j];
 
 				(*columnSizes)[*returnSize] = 2;
 				
