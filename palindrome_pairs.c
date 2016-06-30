@@ -42,6 +42,7 @@ bool check_palindrome(char *a, char *b)
  *     */
 int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* returnSize) {
 	int **ret = malloc(sizeof(int *) * 1000);
+	columnSizes = malloc(sizeof(int *) * 1000);
 	*returnSize = 0;
 
 	int i, j;
@@ -52,7 +53,11 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 			if (check_palindrome(words[i], words[j])) {
 				ret[*returnSize] = malloc(sizeof(int) * 2);
 				ret[*returnSize][0] = i;
-				ret[*returnSize][1] = j;				
+				ret[*returnSize][1] = j;
+
+				columnSizes[*returnSize] = malloc(sizeof(int));
+				columnSizes[*returnSize][0] = 2;
+				
 				++(*returnSize);
 			}
 		}
