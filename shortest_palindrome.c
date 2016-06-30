@@ -39,12 +39,32 @@ bool check_palindrome(char *s, unsigned int *dup, int len)
 	return true;
 }
 
+char *alloc_palindrome(char *s, int len, int end_index)
+{
+	int i = len - 1;
+	while (i > end_index) {
+		
+	}
+	for (i = end_index + 1; i < len; i++) {
+		
+	}
+	return NULL;
+}
+
 char* shortestPalindrome(char* s) {
 	int len = strlen(s);
 	unsigned int *dup = count_dup_num(s, len);
-	check_palindrome(s, dup, len);
+//	check_palindrome(s, dup, len);
+	int end_index = len - 1;
+	while (end_index > 0) {
+		if (check_palindrome(s, dup, end_index + 1)) {
+			return alloc_palindrome(s, len, end_index);
+		}
+		end_index -= dup[end_index];
+		--end_index;
+	}
 
-	return NULL;
+	return alloc_palindrome(s, len, 0);
 }
 
 int main(int argc, char *argv[])
