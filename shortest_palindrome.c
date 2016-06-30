@@ -26,27 +26,33 @@ unsigned int *count_dup_num(char *s, int len)
 	return ret;
 }
 
-int check_palindrome(char *s, unsigned int *dup, int len, int *left_add)
+//s[i] != s[j]   jump last dup num
+//dup[0] > dup[j] jump last 2 dup num
+//dup[i] > dup[j] jump last dup num
+//dup[0] < dup[j] 
+//dup[i] < dup[j] jump last dup num
+
+int check_palindrome(char *s, unsigned int *dup, int len)
 {
 	int i;
-	s += *left_add;
-	dup += *left_add;
-	len -= *left_add;
-	*left_add = 0;
+	int ret = dup[len - 1] + 1;
 	for (i = 0; i <= len / 2; i++) {
 		int	tmp_dup = dup[len - 1 - i];
 			
 		if (s[i] != s[len - 1 - i]) {
-			return tmp_dup + 1;
+			return ret;
 //			return false;
 		}
 		if (dup[i] > tmp_dup) {
-			return tmp_dup + 2;
+			return ret;
 //			return false;
 		}
 		if (dup[i] < tmp_dup) {
-			*left_add = dup[i] + 1;
-			return tmp_dup + 1;
+			if (i != 0) {
+				return ret;
+			} else {
+				len = len - tmp_dup - dup[i];
+			}
 //			return false;
 		}
 		
@@ -76,12 +82,11 @@ char *alloc_palindrome(char *s, int len, int end_index)
 
 char* shortestPalindrome(char* s) {
 	int len = strlen(s);
-	int left_add = 0;
 	unsigned int *dup = count_dup_num(s, len);
 //	check_palindrome(s, dup, len);
 	int end_index = len - 1;
 	while (end_index > 0) {
-		int ret = check_palindrome(s, dup, end_index + 1, &left_add);
+		int ret = check_palindrome(s, dup, end_index + 1);
 		if (ret == 0) {
 			return alloc_palindrome(s, len, end_index);
 		}
