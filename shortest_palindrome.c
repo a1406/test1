@@ -26,17 +26,33 @@ unsigned int *count_dup_num(char *s, int len)
 	return ret;
 }
 
-bool check_palindrome(char *s, unsigned int *dup, int len)
+int check_palindrome(char *s, unsigned int *dup, int len, int *left_add)
 {
 	int i;
+	s += *left_add;
+	dup += *left_add;
+	len -= *left_add;
+	*left_add = 0;
 	for (i = 0; i <= len / 2; i++) {
-		if (s[i] != s[len - 1 - i]) 
-			return false;
-		if (dup[i] != dup[len - 1 - i])
-			return false;
+		int	tmp_dup = dup[len - 1 - i];
+			
+		if (s[i] != s[len - 1 - i]) {
+			return tmp_dup + 1;
+//			return false;
+		}
+		if (dup[i] > tmp_dup) {
+			return tmp_dup + 2;
+//			return false;
+		}
+		if (dup[i] < tmp_dup) {
+			*left_add = dup[i] + 1;
+			return tmp_dup + 1;
+//			return false;
+		}
+		
 		i += dup[i];
 	}
-	return true;
+	return 0;
 }
 
 char *alloc_palindrome(char *s, int len, int end_index)
@@ -60,15 +76,17 @@ char *alloc_palindrome(char *s, int len, int end_index)
 
 char* shortestPalindrome(char* s) {
 	int len = strlen(s);
+	int left_add = 0;
 	unsigned int *dup = count_dup_num(s, len);
 //	check_palindrome(s, dup, len);
 	int end_index = len - 1;
 	while (end_index > 0) {
-		if (check_palindrome(s, dup, end_index + 1)) {
+		int ret = check_palindrome(s, dup, end_index + 1, &left_add);
+		if (ret == 0) {
 			return alloc_palindrome(s, len, end_index);
 		}
-		end_index -= dup[end_index];
-		--end_index;
+		end_index -= (ret);//dup[end_index];
+			//--end_index;
 	}
 
 	return alloc_palindrome(s, len, 0);
@@ -78,12 +96,10 @@ int main(int argc, char *argv[])
 {
 /*
 	unsigned int *dup = count_dup_num(argv[1], strlen(argv[1]));
-	if (check_palindrome(argv[1], dup, strlen(argv[1])))
-		printf("yes\n");
-	else
-		printf("no\n");
+	int t1 = check_palindrome(argv[1], dup, strlen(argv[1]));
+	printf("ret = %d\n", t1);
 	return;
-*/	
+*/
 /*	
 	int i;
 	for (i = 0; i < strlen(argv[1]); i++) {
