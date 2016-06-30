@@ -13,6 +13,13 @@ int get_last_index(int len1, int len2)
 	return (len1 + len2) / 2 - 1;
 }
 
+char get_c(char *a, int len1, char *b, int index)
+{
+	if (index < len1)
+		return a[index];
+	return b[index - len1];
+}
+
 bool check_palindrome(char *a, char *b)
 {
 	int len1 = strlen(a);
