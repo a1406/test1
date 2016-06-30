@@ -53,7 +53,7 @@ int check_palindrome(char *s, unsigned int *dup, int len)
 				return ret;
 			} else {
 				len = len - tmp_dup - dup[i];
-				success_ret += tmp_dup - dup[i];
+				success_ret -= (tmp_dup - dup[i]);
 			}
 //			return false;
 		}
@@ -89,8 +89,8 @@ char* shortestPalindrome(char* s) {
 	int end_index = len - 1;
 	while (end_index > 0) {
 		int ret = check_palindrome(s, dup, end_index + 1);
-		if (ret == 0) {
-			return alloc_palindrome(s, len, end_index);
+		if (ret <= 0) {
+			return alloc_palindrome(s, len, end_index + ret);
 		}
 		end_index -= (ret);//dup[end_index];
 			//--end_index;
