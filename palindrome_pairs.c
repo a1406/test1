@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+//#define printf
+
 int get_op_index(int len1, int len2, int index)
 {
 	return (len1 + len2 - index - 1);
@@ -20,7 +22,10 @@ char get_c(char *a, int len1, char *b, int index)
 	return b[index - len1];
 }
 
-bool check_palindrome(char *a, char *b)
+//0 成功
+//1 继续下一个
+//-1 结束
+int check_palindrome(char *a, char *b)
 {
 	int len1 = strlen(a);
 	int len2 = strlen(b);
@@ -28,11 +33,18 @@ bool check_palindrome(char *a, char *b)
 	int i;
 	for (i = 0; i <= last_index; i++) {
 		int op_index = get_op_index(len1, len2, i);
-		if (get_c(a, len1, b, i) != get_c(a, len1, b, op_index))
-			return false;
+		char c1 = get_c(a, len1, b, i);
+		char c2 = get_c(a, len1, b, op_index);
+		if (c1 != c2) {
+			if (i > len1 || i > len2)
+				return 1;
+			if (c1 > c2)
+				return 1;
+			return -1;
+		}
 	}
 	
-	return true;
+	return 0;
 }
 
 char **g_words;
@@ -100,13 +112,18 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 	int **ret = malloc(sizeof(int *) * 1000);
 	columnSizes = malloc(sizeof(int *) * 1000);
 	*returnSize = 0;
+	int *sort1, *sort2;
+	sort_words(wordsSize, &sort1, &sort2);	
 
 	int i, j;
+	int t;
 	for (i = 0; i < wordsSize; ++i) {
 		for (j = 0; j < wordsSize; ++j) {
-			if (i == j)
+			if (sort1[i] == sort2[j])
 				continue;
-			if (check_palindrome(words[i], words[j])) {
+			t = check_palindrome(words[i], words[j]);
+//			if (check_palindrome(words[i], words[j])) {
+			if (t == 0) {
 				ret[*returnSize] = malloc(sizeof(int) * 2);
 				ret[*returnSize][0] = i;
 				ret[*returnSize][1] = j;
@@ -116,6 +133,8 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 				
 				++(*returnSize);
 			}
+			if (t < 0)
+				break;
 		}
 	}
 		
@@ -124,6 +143,7 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 
 int main(int argc, char *argv[])
 {
+/*	
 	int i;
 	g_words = &argv[1];
 	int *sort1, *sort2;
@@ -141,7 +161,7 @@ int main(int argc, char *argv[])
 	}
 	printf("\n");	
 	return (0);
-
+*/
 	
     if (check_palindrome(argv[1], argv[2]))
 		printf("true\n");
