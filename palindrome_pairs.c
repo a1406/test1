@@ -109,8 +109,9 @@ void sort_words(int size, int **sort1, int **sort2)
  *    * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  *     */
 int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* returnSize) {
+	g_words = words;
 	int **ret = malloc(sizeof(int *) * 1000);
-	columnSizes = malloc(sizeof(int *) * 1000);
+	(*columnSizes) = malloc(sizeof(int) * 1000);
 	*returnSize = 0;
 	int *sort1, *sort2;
 	sort_words(wordsSize, &sort1, &sort2);	
@@ -128,8 +129,7 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 				ret[*returnSize][0] = i;
 				ret[*returnSize][1] = j;
 
-				columnSizes[*returnSize] = malloc(sizeof(int));
-				columnSizes[*returnSize][0] = 2;
+				(*columnSizes)[*returnSize] = 2;
 				
 				++(*returnSize);
 			}
@@ -143,6 +143,13 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 
 int main(int argc, char *argv[])
 {
+	int *column;
+	int ret_size;
+	int **ret = palindromePairs(&argv[1], argc - 1, &column, &ret_size);
+	int i;
+	for (i = 0; i < ret_size; i++) {
+		printf("[%d, %d]\n", ret[i][0], ret[i][1]);
+	}
 /*	
 	int i;
 	g_words = &argv[1];
@@ -162,11 +169,12 @@ int main(int argc, char *argv[])
 	printf("\n");	
 	return (0);
 */
-	
+/*	
     if (check_palindrome(argv[1], argv[2]))
 		printf("true\n");
 	else
 		printf("false\n");
+*/		
     return 0;
 }
 
