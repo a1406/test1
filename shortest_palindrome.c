@@ -41,14 +41,21 @@ bool check_palindrome(char *s, unsigned int *dup, int len)
 
 char *alloc_palindrome(char *s, int len, int end_index)
 {
+	char *ret = malloc(len - 1 - end_index + len + 1);
+
 	int i = len - 1;
+	int index = 0;
 	while (i > end_index) {
-		
+		ret[index] = s[i];
+		--i;
+		++index;
 	}
-	for (i = end_index + 1; i < len; i++) {
-		
+	for (i = 0; i < len; i++) {
+		ret[index] = s[i];
+		++index;
 	}
-	return NULL;
+	ret[index] = '\0';
+	return ret;
 }
 
 char* shortestPalindrome(char* s) {
@@ -69,13 +76,14 @@ char* shortestPalindrome(char* s) {
 
 int main(int argc, char *argv[])
 {
-
+/*
 	unsigned int *dup = count_dup_num(argv[1], strlen(argv[1]));
 	if (check_palindrome(argv[1], dup, strlen(argv[1])))
 		printf("yes\n");
 	else
 		printf("no\n");
 	return;
+*/	
 /*	
 	int i;
 	for (i = 0; i < strlen(argv[1]); i++) {
