@@ -28,7 +28,15 @@ unsigned int *count_dup_num(char *s, int len)
 
 bool check_palindrome(char *s, unsigned int *dup, int len)
 {
-	return false;
+	int i;
+	for (i = 0; i <= len / 2; i++) {
+		if (s[i] != s[len - 1 - i]) 
+			return false;
+		if (dup[i] != dup[len - 1 - i])
+			return false;
+		i += dup[i];
+	}
+	return true;
 }
 
 char* shortestPalindrome(char* s) {
@@ -41,8 +49,14 @@ char* shortestPalindrome(char* s) {
 
 int main(int argc, char *argv[])
 {
-/*	
+
 	unsigned int *dup = count_dup_num(argv[1], strlen(argv[1]));
+	if (check_palindrome(argv[1], dup, strlen(argv[1])))
+		printf("yes\n");
+	else
+		printf("no\n");
+	return;
+/*	
 	int i;
 	for (i = 0; i < strlen(argv[1]); i++) {
 		printf("%02d ", argv[1][i]);
