@@ -25,8 +25,8 @@ data *alloc_data(char *s)
 	int len = strlen(s);
 	data *ret = malloc(sizeof(data));
 	ret->len = len;
-	ret->l1 = malloc(sizeof(long) * get_data_len(len));
-	ret->l2 = malloc(sizeof(long) * get_data_len(len));	
+	ret->l1 = malloc(sizeof(long long) * get_data_len(len));
+	ret->l2 = malloc(sizeof(long long) * get_data_len(len));	
 	return ret;
 }
 
