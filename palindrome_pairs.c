@@ -25,10 +25,24 @@ data *alloc_data(char *s)
 	int len = strlen(s);
 	data *ret = malloc(sizeof(data));
 	int data_len = get_data_len(len);
+	int i;
 	
 	ret->len = len;
 	ret->l1 = malloc(sizeof(long long) * data_len);
-	ret->l2 = malloc(sizeof(long long) * data_len);	
+	ret->l2 = malloc(sizeof(long long) * data_len);
+
+	char *head = &s[0], *tail = &s[len - 1];
+	char *l1 = (char *)ret->l1;
+	char *l2 = (char *)ret->l2;	
+	for (i = 0; i < data_len; i++) {
+		*l1 = *head;
+		*l2 = *tail;
+		++head;
+		--tail;
+		++l1;
+		++l2;
+	}
+	
 	return ret;
 }
 
