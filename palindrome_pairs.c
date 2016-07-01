@@ -5,6 +5,31 @@
 
 //#define printf
 
+typedef struct data__
+{
+	unsigned long long *l1;
+	unsigned long long *l2;
+	unsigned char len;
+} data;
+
+int get_data_len(int len)
+{
+	int ret = len / 8;
+	if (len % 8 != 0)
+		++ret;
+	return ret;
+}
+
+data *alloc_data(char *s)
+{
+	int len = strlen(s);
+	data *ret = malloc(sizeof(data));
+	ret->len = len;
+	ret->l1 = malloc(sizeof(long) * get_data_len(len));
+	ret->l2 = malloc(sizeof(long) * get_data_len(len));	
+	return ret;
+}
+
 int get_op_index(int len1, int len2, int index)
 {
 	return (len1 + len2 - index - 1);
