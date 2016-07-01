@@ -10,6 +10,7 @@ typedef struct data__
 	unsigned long long *l1;
 	unsigned long long *l2;
 	unsigned char len;
+	unsigned char l_len;
 } data;
 
 int get_data_len(int len)
@@ -28,19 +29,30 @@ data *alloc_data(char *s)
 	int i;
 	
 	ret->len = len;
+	ret->l_len = data_len;
 	ret->l1 = malloc(sizeof(long long) * data_len);
 	ret->l2 = malloc(sizeof(long long) * data_len);
+	memset(ret->l1, 0, sizeof(long long) * data_len);
+	memset(ret->l2, 0, sizeof(long long) * data_len);	
 
 	char *head = &s[0], *tail = &s[len - 1];
 	char *l1 = (char *)ret->l1;
-	char *l2 = (char *)ret->l2;	
-	for (i = 0; i < data_len; i++) {
+	char *l2 = (char *)ret->l2;
+	int j;
+	l1 += 7;
+	l2 += 7;
+	for (i = 0, j = 0; i < len; i++, j++) {
+		if (j == 8) {
+			j = 0;
+			l1 += 15;
+			l2 += 15;
+		}
 		*l1 = *head;
 		*l2 = *tail;
 		++head;
 		--tail;
-		++l1;
-		++l2;
+		--l1;
+		--l2;
 	}
 	
 	return ret;
@@ -185,6 +197,19 @@ int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* retur
 
 int main(int argc, char *argv[])
 {
+	data *data = alloc_data(argv[1]);
+	printf("len = %d, l_len = %d\n", data->len, data->l_len);
+	int iii;
+	for (iii = 0; iii < data->l_len; iii++) {
+		printf("%llx ", data->l1[iii]);
+	}
+	printf("\n");
+	for (iii = 0; iii < data->l_len; iii++) {
+		printf("%llx ", data->l2[iii]);
+	}
+	printf("\n");
+	return (0);
+	
 	int *column;
 	int ret_size;
 	printf("argc = %d\n", argc);
