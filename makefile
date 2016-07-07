@@ -1,7 +1,7 @@
 all_target=test1 candy  distinct_subsequences permutations jump_game \
 	edit_distance first_missing_positive trapping_rain_water \
 	text_justification shortest_palindrome self_crossing \
-	palindrome_pairs
+	palindrome_pairs list_test
 
 all: $(all_target)
 
@@ -44,3 +44,5 @@ self_crossing: self_crossing.c
 palindrome_pairs: palindrome_pairs.c
 	gcc -g -O0 -o $@ $^
 
+list_test: list_test.c
+	gcc -g -O0 -o $@ $^

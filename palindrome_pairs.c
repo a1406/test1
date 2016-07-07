@@ -13,6 +13,8 @@ typedef struct data__
 	unsigned char l_len;
 } data;
 
+data **g_data;
+
 int get_data_len(int len)
 {
 	int ret = len / 8;
@@ -163,15 +165,19 @@ void sort_words(int size, int **sort1, int **sort2)
  *    * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  *     */
 int** palindromePairs(char** words, int wordsSize, int** columnSizes, int* returnSize) {
+	int i, j;
+	int t;
 	g_words = words;
 	int **ret = malloc(sizeof(int *) * 8000);
 	(*columnSizes) = malloc(sizeof(int*) * 8000);
 	*returnSize = 0;
 	int *sort1, *sort2;
-	sort_words(wordsSize, &sort1, &sort2);	
+	sort_words(wordsSize, &sort1, &sort2);
 
-	int i, j;
-	int t;
+	for (i = 0; i < wordsSize; i++) {
+		
+	}
+
 	for (i = 0; i < wordsSize; ++i) {
 		for (j = 0; j < wordsSize; ++j) {
 			if (sort1[i] == sort2[j])
